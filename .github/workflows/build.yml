@@ -40,7 +40,7 @@ jobs:
           --exclude-module ftplib
           --exclude-module imaplib
           --exclude-module smtplib
-          clasificador.py
+          Clasificador.py
 
       - name: Guardar exe como artefacto descargable
         uses: actions/upload-artifact@v4
