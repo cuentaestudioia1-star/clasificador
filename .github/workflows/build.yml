@@ -1,0 +1,50 @@
+name: Compilar Clasificador.exe
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # permite lanzarlo manualmente desde GitHub
+
+jobs:
+  build:
+    runs-on: windows-latest   # máquina virtual Windows en la nube
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar PyInstaller
+        run: pip install pyinstaller
+
+      - name: Compilar exe
+        run: >
+          pyinstaller
+          --onefile
+          --windowed
+          --name "Clasificador"
+          --exclude-module _bootlocale
+          --exclude-module unittest
+          --exclude-module test
+          --exclude-module email
+          --exclude-module http
+          --exclude-module urllib
+          --exclude-module xml
+          --exclude-module pydoc
+          --exclude-module doctest
+          --exclude-module difflib
+          --exclude-module ftplib
+          --exclude-module imaplib
+          --exclude-module smtplib
+          Clasificador.py
+
+      - name: Guardar exe como artefacto descargable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Clasificador-exe
+          path: dist/Clasificador.exe
+          retention-days: 30
